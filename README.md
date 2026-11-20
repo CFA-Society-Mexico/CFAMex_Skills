@@ -1,119 +1,176 @@
-# Skill
+<div align="center">
 
-Agent skills for investment analysis, published by CFA Society Mexico. Each folder is a
-self-contained skill (`SKILL.md` + references + scripts) that Claude Code and other agents
-following the Agent Skills format can load.
+# CFA Society Mexico · Skills
 
-| Skill | What it does |
+**Repositorio oficial de agent skills de CFA Society Mexico**
+*Skills abiertas para análisis de inversiones, construidas sobre el currículum CFA y mantenidas por voluntarios.*
+
+[![License: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+[![Skills](https://img.shields.io/badge/skills-2-0A66C2.svg)](#catálogo)
+[![Agent Skills](https://img.shields.io/badge/formato-Agent%20Skills-8A2BE2.svg)](#instalación)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-D97757.svg)](#instalación)
+[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](#instalación)
+[![PRs bienvenidos](https://img.shields.io/badge/PRs-bienvenidos-brightgreen.svg)](#contribuir)
+[![Último commit](https://img.shields.io/github/last-commit/CFA-Society-Mexico/Skill.svg)](https://github.com/CFA-Society-Mexico/Skill/commits/main)
+
+[Catálogo](#catálogo) · [Instalación](#instalación) · [Principios](#principios-de-diseño) · [Contribuir](#contribuir) · [Licencia](#licencia-y-avisos)
+
+</div>
+
+---
+
+## Catálogo
+
+Cada carpeta es una skill autocontenida (`SKILL.md` + referencias + scripts) en el formato
+[Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), que
+pueden cargar Claude Code y otros agentes compatibles.
+
+| Skill | Qué hace | Entrega | Marco |
+|---|---|---|---|
+| 📊 [**credit-4c**](credit-4c/) | Análisis de crédito de una empresa a partir de sus estados financieros, con ajustes de deuda estilo S&P, estrés y revisión de liquidez y vencimientos | Excel con fórmulas vivas + reporte PDF con gráficas | CFA 4C: Capacidad, Colateral, Covenants, Carácter |
+| 📝 [**ips-design**](ips-design/) | Redacta la Declaración de Política de Inversión (IPS) de un cliente individual a partir de sus respuestas al cuestionario de perfil | Documento Word (.docx) en español, en borrador para firma | CFA Institute: objetivos y restricciones (RRTTLLU), capacidad vs disposición al riesgo |
+
+---
+
+## Instalación
+
+Clona el repositorio y copia la carpeta de la skill que quieras en tu directorio de skills.
+
+**Windows (PowerShell)**
+```powershell
+git clone https://github.com/CFA-Society-Mexico/Skill.git
+Copy-Item -Recurse Skill\ips-design "$HOME\.claude\skills\ips-design"
+```
+
+**macOS / Linux**
+```bash
+git clone https://github.com/CFA-Society-Mexico/Skill.git
+cp -r Skill/ips-design ~/.claude/skills/ips-design
+```
+
+Después pídele al agente la tarea en lenguaje natural; la skill se activa sola.
+
+| Skill | Requisitos |
 |---|---|
-| [credit-4c](#credit-4c) | CFA 4C credit analysis → Excel workbook + PDF report |
-| [ips-design](#ips-design) | Individual client IPS from questionnaire answers → Spanish .docx |
+| credit-4c | Python 3.10+ con `openpyxl`, `pdfplumber`, `matplotlib`, `reportlab`, `pyyaml`; Excel (Windows, vía `pywin32`) o LibreOffice para recalcular |
+| ips-design | Python 3.10+ con `python-docx` (y `pytest` para correr las pruebas) |
 
-## credit-4c
+---
 
-Credit analysis of a company from a folder of financial statements, following the CFA
-4Cs (Capacity, Collateral, Covenants, Character) with S&P-style debt adjustments, a stress
-test and a liquidity / maturity review.
+## Principios de diseño
 
-**Output**
-- An Excel workbook where every number outside the cited `Sources` table is a live
-  formula (blue inputs, black calculations, green links), with integrity checks.
-- A PDF report with charts, findings per C, a bear case and the limits of the analysis.
+Todas las skills del repositorio están construidas contra las fallas conocidas de los
+analistas y asesores basados en LLM:
 
-**Design principle: the model explains each C; it does not decide the rating.** Every
-status in the workbook is a proposal against policy bands; the analyst-decision cells
-are left empty. The pipeline is built against known failure modes of LLM analysts:
-arithmetic is done by Excel formulas (never the LLM), every hard-coded figure carries a
-document + page citation, each C has a mandatory "what to doubt" list, and only core
-metrics can drive a Reject proposal.
+| Principio | En la práctica |
+|---|---|
+| 🧑‍⚖️ **El modelo propone, el profesional decide** | Calificaciones, tolerancias y asignaciones son *propuestas*; las celdas o líneas de decisión quedan vacías para el analista o PM |
+| 🧮 **El LLM no hace aritmética** | Los números los calculan fórmulas de Excel o scripts de Python; el texto los cita, no los reescribe |
+| 🔎 **Nada sin fuente** | Cada cifra capturada lleva documento y página, o la cita textual del cliente; lo desconocido queda como `[PENDIENTE]`, nunca como un supuesto silencioso |
+| 🚦 **Puertas de aprobación** | El flujo se detiene para que apruebes la captura de datos antes de construir el entregable |
+| ⚖️ **Contra el colapso heurístico** | Ninguna métrica aislada decide el resultado: los factores se evalúan por separado y se muestran todos |
 
-### Install
+---
 
-Copy the `credit-4c` folder into your skills directory, e.g. `~/.claude/skills/credit-4c/`.
+## Skills
 
-Requirements: Python 3.10+ with `openpyxl`, `pdfplumber`, `matplotlib`, `reportlab`,
-`pyyaml`; Microsoft Excel (Windows, via `pywin32`) or LibreOffice to recalculate the
-workbook.
+### 📊 credit-4c
 
-### Use
+Análisis de crédito de una empresa con el marco 4C del CFA (Capacidad, Colateral,
+Covenants, Carácter), ajustes de deuda estilo S&P, prueba de estrés y revisión de liquidez
+y vencimientos.
 
-Ask the agent in plain words, e.g. *"Analiza el credito de <emisora> con el framework 4C;
-los estados financieros estan en <carpeta>"*. The skill walks through intake, capture
-(with an approval gate), qualitative evidence, workbook build, recalculation and checks,
-and the report (with a final hand-over gate).
+**Entrega**
+- Libro de Excel en el que cada cifra fuera de la tabla citada `Sources` es una fórmula viva
+  (insumos en azul, cálculos en negro, vínculos en verde), con chequeos de integridad.
+- Reporte PDF con gráficas, hallazgos por C, caso bajista y límites del análisis.
 
-Default policy bands come from the CFA Level I credit metrics tables plus documented
-skill defaults (`credit-4c/assets/policy-default.yaml`). Replace them with your own
-policy before relying on any proposal.
+**Uso**: *"Analiza el crédito de &lt;emisora&gt; con el framework 4C; los estados financieros
+están en &lt;carpeta&gt;"*. Las bandas de política por omisión
+(`credit-4c/assets/policy-default.yaml`) vienen de las tablas de métricas de crédito de
+CFA Nivel I más defaults documentados; reemplázalas con tu política antes de confiar en
+cualquier propuesta.
 
-### Not for
+**No es para**: bancos y aseguradoras, valuación de capital ni modelos de tres estados
+completos.
 
-Banks and insurers (capital and liquidity ratios drive them), equity valuation, or
-full three-statement forecasting.
+### 📝 ips-design
 
-## ips-design
+Redacta la Declaración de Política de Inversión (IPS) de un cliente individual siguiendo
+la práctica del CFA Institute. Cubre objetivos de retorno y riesgo; capacidad y disposición
+al riesgo; restricciones de horizonte, impuestos, liquidez, legales y circunstancias únicas;
+asignación estratégica y detonantes de revisión.
 
-Drafts an individual client's Investment Policy Statement (IPS) following CFA Institute
-practice — return and risk objectives, ability vs willingness to take risk, the
-time-horizon / tax / liquidity / legal / unique constraints, strategic allocation and
-review triggers — from the client's answers to an intake questionnaire. Deliverable in
-Spanish.
+**Entrega**
+- IPS en Word, en español, con marca de borrador en cada página, bloque de firmas y anexos:
+  supuestos con fuente, pendientes y una tabla de trazabilidad que liga cada dato del
+  cliente con las secciones que lo usan.
+- Los archivos de trabajo: `client.json` (datos + citas), `calc.json` (cálculos) e
+  `ips.json` (narrativa).
 
-**Output**
-- A Spanish `.docx` IPS with a draft mark on every page, a signature block and annexes:
-  assumptions with sources, open items, and a traceability table linking every client
-  fact to the sections that use it.
-- The working files behind it: `client.json` (facts + quotes), `calc.json`
-  (calculations), `ips.json` (narrative).
+**Cómo funciona**
+- La **capacidad** se evalúa factor por factor con datos duros: horizonte, tasa de retiro,
+  liquidez, retorno requerido, estabilidad del ingreso, deuda y flexibilidad.
+- La **disposición** se evalúa con tres fuentes independientes (cuestionario, pérdida
+  tolerada y comportamiento pasado) y se señalan las contradicciones.
+- La **tolerancia propuesta** es la menor de las dos, con una línea vacía para la decisión
+  del PM.
+- Con las expectativas de mercado (CMA) del PM propone una **asignación estratégica** y
+  verifica que alcance el retorno requerido después de comisiones e impuestos.
 
-**Design principle: the skill drafts; the PM and the client decide.** It is built against
-the known failure modes of LLM advisers, chiefly heuristic collapse (letting the stated
-risk tolerance drive everything):
-- Ability to take risk is scored factor by factor from hard facts (horizon, withdrawal
-  rate, liquidity needs, required return, income stability, debt, flexibility).
-- Willingness is scored from three independent sources, with contradictions flagged.
-- The proposed tolerance is the lower of the two, with an empty PM-decision line.
-- Every number comes from a script and reaches the text through placeholders.
-- Unknown facts stay `[PENDIENTE]`; tax rates and regulation are never filled from memory.
-- The build fails if any client fact is neither used nor justified.
+**Uso**
+- Sin respuestas todavía: pide el cuestionario en blanco (`ips-design/assets/questionnaire.md`).
+- Con respuestas: *"Arma la IPS de &lt;cliente&gt;; sus respuestas están en &lt;archivo&gt;"*.
+  Agrega tu CMA (formato `assets/cma-template.json`) para obtener una asignación propuesta.
+- `build_ips_docx.py <carpeta> --final` quita la marca de borrador y solo corre con cero
+  pendientes.
 
-### Install
+Las bandas de `assets/policy-default.json` son reglas de la casa para calibrar, no cifras
+del CFA. Los requisitos regulatorios locales (por ejemplo, el perfil de inversión que
+exige el regulador) quedan como lista de verificación para cumplimiento.
 
-Copy the `ips-design` folder into your skills directory, e.g. `~/.claude/skills/ips-design/`.
+<details>
+<summary><b>Limitaciones conocidas (v1)</b></summary>
 
-Requirements: Python 3.10+ with `python-docx` (and `pytest` to run the tests).
+- Una sola tolerancia para toda la cartera. No hay canastas por meta, así que una meta grande
+  de corto plazo (por ejemplo, el enganche de una casa) también limita el dinero de largo plazo.
+- Un ingreso grande e incierto, como la venta de una empresa, no se puede modelar como
+  escenario; se deja fuera de los flujos y se señala.
+- El retorno deseado solo varía la meta al final del horizonte, no metas intermedias.
+- Las líneas de firma se generan solo para cliente y asesor; los co-decisores se agregan en
+  el texto.
 
-### Use
+</details>
 
-- No answers yet: ask the agent for the blank questionnaire
-  (`ips-design/assets/questionnaire.md`).
-- With answers: e.g. *"Arma la IPS de <cliente>; sus respuestas estan en <archivo>"*. Add
-  your capital market expectations (`assets/cma-template.json` format) to get a proposed
-  strategic allocation; without them the allocation is left to the PM.
-- The skill stops for approval after mapping the answers, and hands over at the end with
-  the decisions left open.
-- `build_ips_docx.py <out> --final` removes the draft mark, and only runs with zero open
-  items.
+**No es para**: inversionistas institucionales (fondos de pensiones, fundaciones,
+endowments, aseguradoras), selección de valores ni aprobación de cumplimiento.
 
-Default bands in `assets/policy-default.json` are house rules to calibrate, not CFA
-figures. Jurisdiction-specific requirements (e.g. the regulator's investor-profile rules)
-are left as a compliance checklist.
+---
 
-### Known limitations (v1)
+## Contribuir
 
-- One risk tolerance for the whole portfolio. There are no goal-based buckets, so a large
-  near-term goal (e.g. a home down payment) caps the tolerance of the long-term money too.
-- A large uncertain inflow, such as the sale of a business, can't be modeled as a
-  scenario; it is kept out of the cash flows and flagged.
-- The desired return only varies the end-of-horizon target, not intermediate goals.
-- Signature lines are generated for the client and the adviser only; add co-decision
-  makers in the text.
+Las contribuciones son bienvenidas vía pull request.
 
-### Not for
+1. Cada skill vive en su propia carpeta con `SKILL.md`, `references/`, `scripts/` y `assets/`
+   según necesite.
+2. Los cálculos van en scripts con pruebas (`pytest`); los scripts imprimen PASS/FAIL y
+   salen con código distinto de cero si algo falla.
+3. Sin datos de clientes reales, rutas locales ni credenciales en el repositorio.
+4. Agrega tu skill al [catálogo](#catálogo) de este README.
 
-Institutional investors (pensions, foundations, endowments, insurers), security
-selection, or compliance sign-off.
+¿Encontraste un error o tienes una idea? Abre un
+[issue](https://github.com/CFA-Society-Mexico/Skill/issues).
 
-## License
+---
 
-MIT - see [LICENSE](LICENSE).
+## Licencia y avisos
+
+Distribuido bajo la [licencia MIT](LICENSE) · © 2026 CFA Society Mexico.
+
+> [!IMPORTANT]
+> **No es asesoría de inversión.** Estas skills generan borradores y propuestas para
+> profesionales de inversión; no sustituyen el juicio profesional, la revisión de
+> cumplimiento ni la asesoría fiscal o legal. Verifica cada resultado antes de usarlo con un
+> cliente.
+
+CFA® y Chartered Financial Analyst® son marcas registradas propiedad de CFA Institute.
