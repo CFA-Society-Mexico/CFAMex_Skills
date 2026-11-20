@@ -1,0 +1,59 @@
+# credit-4c default policy. Copy to <out>/policy.yaml and edit the copy.
+# Every band carries its source: a default is not a policy until the analyst owns it.
+name: "credit-4c default (CFA L1 bands + skill defaults)"
+
+# direction: lower = lower is better (leverage); higher = higher is better (coverage)
+# tier: core metrics can drive a Reject proposal; a supplementary metric in Reject only raises Review.
+#   Why: one ill-fitting ratio (a retailer's quick ratio) must not flip the whole Capacity view.
+metrics:
+  debt_ebitda:        {label: "Debt / EBITDA (adjusted)",        direction: lower,  approve: 2.0,  reject: 3.5,  tier: core, fmt: x,   source: "CFA L1 credit metrics table"}
+  net_debt_ebitda:    {label: "Net debt / EBITDA (adjusted)",    direction: lower,  approve: 1.5,  reject: 3.0,  tier: core, fmt: x,   source: "CFA L1 credit metrics table"}
+  ffo_debt:           {label: "FFO / debt",                      direction: higher, approve: 0.45, reject: 0.20, tier: core, fmt: pct, source: "Skill default (S&P-style, general knowledge; verify)"}
+  ebit_interest:      {label: "EBIT / interest",                 direction: higher, approve: 5.0,  reject: 2.5,  tier: core, fmt: x,   source: "CFA L1 credit metrics table"}
+  ebitda_interest:    {label: "EBITDA / interest",               direction: higher, approve: 7.0,  reject: 3.5,  tier: core, fmt: x,   source: "CFA L1 credit metrics table"}
+  fixed_charge_cov:   {label: "Fixed-charge coverage",           direction: higher, approve: 2.0,  reject: 1.2,  tier: supplementary, fmt: x,   source: "CFA L1 credit metrics table"}
+  debt_service_cov:   {label: "Debt-service coverage",           direction: higher, approve: 1.5,  reject: 1.0,  tier: supplementary, fmt: x,   source: "CFA L1 credit metrics table"}
+  cfo_debt:           {label: "CFO / debt",                      direction: higher, approve: 0.30, reject: 0.15, tier: supplementary, fmt: pct, source: "CFA L1 liquidity table"}
+  current_ratio:      {label: "Current ratio",                   direction: higher, approve: 1.0,  reject: 0.8,  tier: supplementary, fmt: x,   source: "CFA L1 (>1 healthy); reject band skill default"}
+  quick_ratio:        {label: "Quick ratio",                     direction: higher, approve: 0.75, reject: 0.5,  tier: supplementary, fmt: x,   source: "CFA L1 (>0.75 healthy); reject band skill default"}
+  liquidity_months:   {label: "Liquidity months",                direction: higher, approve: 24,   reject: 12,   tier: supplementary, fmt: num, source: "Skill default"}
+  liquidity_su:       {label: "Liquidity sources / uses (12m)",  direction: higher, approve: 1.5,  reject: 1.0,  tier: core, fmt: x,   source: "Skill default"}
+  recovery_unsecured: {label: "Senior unsecured recovery (distress)", direction: higher, approve: 0.60, reject: 0.30, tier: core, fmt: pct, source: "Skill default (CFA L1: senior unsecured recoveries typically 20-40%)"}
+
+# Sector overrides: replace approve/reject for named metrics, e.g. retail runs negative working capital.
+# sector_overrides:
+#   current_ratio: {approve: 0.8, reject: 0.6, source: "Analyst: retail negative WC by design"}
+sector_overrides: {}
+
+stress:
+  ebitda_shock: 0.30        # EBITDA falls 30%
+  rate_shock_bp: 200        # +200 bp
+  floating_share: 1.0       # fallback only: the debt schedule's floating share is used when a schedule exists
+
+debt_adjustments:
+  include_leases: 1         # 1 = lease liabilities count as debt (S&P)
+  cash_netting_allowed: 1   # 0 for weak business or sponsor-owned (S&P)
+  cash_haircut: 0.0         # share of cash treated as not accessible
+  interest_paid_in_financing: 0  # 1 if the issuer books interest paid (incl. lease interest) in financing (IFRS option)
+
+collateral:
+  admin_claims_share: 0.10  # share of distressed value consumed by admin / priority claims
+  haircuts:                 # loss vs book value in distress (skill defaults; analyst should own)
+    cash: 0.0
+    receivables: 0.20
+    inventories: 0.40
+    ppe: 0.50
+    investment_property: 0.40
+    rou_assets: 1.0
+    goodwill_intangibles: 1.0
+  trade_payables_rank_with_unsecured: 1
+
+covenants:
+  tight_headroom: 0.15      # headroom below 15% = Tight
+
+scorecard:
+  reject_count_trigger: 1   # proposal = Reject if this many metrics are Reject
+  review_count_trigger: 1   # proposal = Review if this many metrics are Review
+
+checks:
+  abs_tolerance: 1.0        # in workbook units
