@@ -1,0 +1,35 @@
+{
+  "_nota": "Copiar a la carpeta de salida como policy.json y editar la copia. Las bandas son reglas de la casa: calibrar. Cada supuesto lleva su fuente.",
+  "supuestos": {
+    "inflacion": {
+      "valor": 0.03,
+      "fuente": "Banxico, meta de inflacion 3% +/- 1 pp. Supuesto de largo plazo; el PM puede reemplazarlo."
+    },
+    "comision_anual": {
+      "valor": null,
+      "fuente": "Sin default: la comision la define el PM. Si queda vacia, el retorno se reporta neto de comisiones y queda PENDIENTE."
+    },
+    "edad_horizonte_planeacion": {
+      "valor": 95,
+      "fuente": "Convencion de planeacion (longevidad). Confirmar con el cliente; solo se usa si el cliente no da fases."
+    }
+  },
+  "capacidad": {
+    "horizonte_anios": {"bajo_menor_a": 3, "alto_mayor_a": 10},
+    "tasa_retiro": {"alto_hasta": 0.03, "bajo_mayor_a": 0.05},
+    "liquidez_ratio": {"alto_hasta": 0.05, "bajo_mayor_a": 0.15},
+    "retorno_requerido_real": {"alto_hasta": 0.03, "bajo_mayor_a": 0.05},
+    "deuda_patrimonio": {"alto_hasta": 0.20, "bajo_mayor_a": 0.50},
+    "flexibilidad_si": {"alto_desde": 2, "bajo_hasta": 0},
+    "max_factores_faltantes": 2
+  },
+  "disposicion": {
+    "likert_medio_desde": 2.5,
+    "likert_alto_mayor_a": 3.5,
+    "perdida_medio_desde": 0.10,
+    "perdida_alto_mayor_a": 0.20
+  },
+  "limite_perdida_por_nivel": {"bajo": 0.10, "medio": 0.20, "alto": 0.30},
+  "shortfall_z": 2.0,
+  "liquidez_horizonte_meses": 24
+}
