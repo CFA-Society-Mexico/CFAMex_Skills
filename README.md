@@ -45,3 +45,7 @@ policy before relying on any proposal.
 
 Banks and insurers (capital and liquidity ratios drive them), equity valuation, or
 full three-statement forecasting.
+
+## License
+
+MIT - see [LICENSE](LICENSE).
