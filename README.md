@@ -1,6 +1,6 @@
 <div align="center">
 
-# CFAMex_Skills
+# Skills
 
 **Repositorio oficial de agent skills de CFA Society Mexico**
 *Skills abiertas para análisis de inversiones, construidas sobre el currículum CFA y mantenidas por voluntarios.*
@@ -11,7 +11,7 @@
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-D97757.svg)](#instalación)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](#instalación)
 [![PRs bienvenidos](https://img.shields.io/badge/PRs-bienvenidos-brightgreen.svg)](#contribuir)
-[![Último commit](https://img.shields.io/github/last-commit/CFA-Society-Mexico/CFAMex_Skills.svg)](https://github.com/CFA-Society-Mexico/CFAMex_Skills/commits/main)
+[![Último commit](https://img.shields.io/github/last-commit/CFA-Society-Mexico/Skills.svg)](https://github.com/CFA-Society-Mexico/Skills/commits/main)
 
 [Catálogo](#catálogo) · [Instalación](#instalación) · [Principios](#principios-de-diseño) · [Contribuir](#contribuir) · [Licencia](#licencia-y-avisos)
 
@@ -43,14 +43,14 @@ Clona el repositorio y copia la carpeta de la skill que quieras en tu directorio
 
 **Windows (PowerShell)**
 ```powershell
-git clone https://github.com/CFA-Society-Mexico/CFAMex_Skills.git
-Copy-Item -Recurse CFAMex_Skills\ips-design "$HOME\.claude\skills\ips-design"
+git clone https://github.com/CFA-Society-Mexico/Skills.git
+Copy-Item -Recurse Skills\ips-design "$HOME\.claude\skills\ips-design"
 ```
 
 **macOS / Linux**
 ```bash
-git clone https://github.com/CFA-Society-Mexico/CFAMex_Skills.git
-cp -r CFAMex_Skills/ips-design ~/.claude/skills/ips-design
+git clone https://github.com/CFA-Society-Mexico/Skills.git
+cp -r Skills/ips-design ~/.claude/skills/ips-design
 ```
 
 Después pídele al agente la tarea en lenguaje natural; la skill se activa sola.
@@ -156,7 +156,7 @@ endowments, aseguradoras), selección de valores ni aprobación de cumplimiento.
 
 ### 🤝 Te invitamos a sumar tus skills
 
-CFAMex_Skills es un proyecto abierto de la comunidad de CFA Society Mexico. Si eres
+Este repositorio es un proyecto abierto de la comunidad de CFA Society Mexico. Si eres
 charterholder, candidato o profesional de inversiones y tienes un proceso que haces una y
 otra vez, probablemente ya es una skill esperando ser escrita. Compártela: tu trabajo puede
 ahorrarle horas a cientos de colegas y elevar el estándar de cómo la industria usa la IA.
@@ -173,7 +173,7 @@ ahorrarle horas a cientos de colegas y elevar el estándar de cómo la industria
 | Mercado mexicano | Lectura de reportes BMV, análisis de FIBRAs, curvas de Cetes y Mbonos |
 
 ¿Tienes otra idea? Propónla en un
-[issue](https://github.com/CFA-Society-Mexico/CFAMex_Skills/issues) antes de escribirla y
+[issue](https://github.com/CFA-Society-Mexico/Skills/issues) antes de escribirla y
 la afinamos juntos.
 
 ### Cómo colaborar
@@ -189,7 +189,7 @@ la afinamos juntos.
 6. Agrega tu skill al [catálogo](#catálogo) y abre un pull request.
 
 ¿Encontraste un error? Abre un
-[issue](https://github.com/CFA-Society-Mexico/CFAMex_Skills/issues).
+[issue](https://github.com/CFA-Society-Mexico/Skills/issues).
 
 ---
 
