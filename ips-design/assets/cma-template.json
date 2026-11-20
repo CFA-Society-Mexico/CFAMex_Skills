@@ -1,0 +1,18 @@
+{
+  "_nota": "Plantilla. Las expectativas de mercado (CMA) son del PM: no llenar con cifras de memoria. Retornos y volatilidades anuales, base nominal en la moneda del cliente.",
+  "fecha": "YYYY-MM-DD",
+  "fuente": "House view del PM / documento de CMA",
+  "base": "nominal",
+  "clases": [
+    {"clase": "Efectivo y reporto", "retorno_esperado": null, "volatilidad": null},
+    {"clase": "Renta fija gubernamental", "retorno_esperado": null, "volatilidad": null},
+    {"clase": "Renta variable local", "retorno_esperado": null, "volatilidad": null},
+    {"clase": "Renta variable global", "retorno_esperado": null, "volatilidad": null}
+  ],
+  "correlaciones": [
+    [1.0, null, null, null],
+    [null, 1.0, null, null],
+    [null, null, 1.0, null],
+    [null, null, null, 1.0]
+  ]
+}
