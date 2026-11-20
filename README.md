@@ -1,6 +1,6 @@
 <div align="center">
 
-# CFA Society Mexico · Skills
+# CFAMex_Skills
 
 **Repositorio oficial de agent skills de CFA Society Mexico**
 *Skills abiertas para análisis de inversiones, construidas sobre el currículum CFA y mantenidas por voluntarios.*
@@ -11,7 +11,7 @@
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-D97757.svg)](#instalación)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](#instalación)
 [![PRs bienvenidos](https://img.shields.io/badge/PRs-bienvenidos-brightgreen.svg)](#contribuir)
-[![Último commit](https://img.shields.io/github/last-commit/CFA-Society-Mexico/Skill.svg)](https://github.com/CFA-Society-Mexico/Skill/commits/main)
+[![Último commit](https://img.shields.io/github/last-commit/CFA-Society-Mexico/CFAMex_Skills.svg)](https://github.com/CFA-Society-Mexico/CFAMex_Skills/commits/main)
 
 [Catálogo](#catálogo) · [Instalación](#instalación) · [Principios](#principios-de-diseño) · [Contribuir](#contribuir) · [Licencia](#licencia-y-avisos)
 
@@ -30,6 +30,11 @@ pueden cargar Claude Code y otros agentes compatibles.
 | 📊 [**credit-4c**](credit-4c/) | Análisis de crédito de una empresa a partir de sus estados financieros, con ajustes de deuda estilo S&P, estrés y revisión de liquidez y vencimientos | Excel con fórmulas vivas + reporte PDF con gráficas | CFA 4C: Capacidad, Colateral, Covenants, Carácter |
 | 📝 [**ips-design**](ips-design/) | Redacta la Declaración de Política de Inversión (IPS) de un cliente individual a partir de sus respuestas al cuestionario de perfil | Documento Word (.docx) en español, en borrador para firma | CFA Institute: objetivos y restricciones (RRTTLLU), capacidad vs disposición al riesgo |
 
+> [!TIP]
+> **¿Usas agentes en tu trabajo de inversión? Este catálogo crece con la comunidad.**
+> Si tienes un proceso que repites (una valuación, un reporte, un análisis), conviértelo en
+> skill y compártelo. [Así puedes colaborar →](#contribuir)
+
 ---
 
 ## Instalación
@@ -38,14 +43,14 @@ Clona el repositorio y copia la carpeta de la skill que quieras en tu directorio
 
 **Windows (PowerShell)**
 ```powershell
-git clone https://github.com/CFA-Society-Mexico/Skill.git
-Copy-Item -Recurse Skill\ips-design "$HOME\.claude\skills\ips-design"
+git clone https://github.com/CFA-Society-Mexico/CFAMex_Skills.git
+Copy-Item -Recurse CFAMex_Skills\ips-design "$HOME\.claude\skills\ips-design"
 ```
 
 **macOS / Linux**
 ```bash
-git clone https://github.com/CFA-Society-Mexico/Skill.git
-cp -r Skill/ips-design ~/.claude/skills/ips-design
+git clone https://github.com/CFA-Society-Mexico/CFAMex_Skills.git
+cp -r CFAMex_Skills/ips-design ~/.claude/skills/ips-design
 ```
 
 Después pídele al agente la tarea en lenguaje natural; la skill se activa sola.
@@ -149,17 +154,42 @@ endowments, aseguradoras), selección de valores ni aprobación de cumplimiento.
 
 ## Contribuir
 
-Las contribuciones son bienvenidas vía pull request.
+### 🤝 Te invitamos a sumar tus skills
 
-1. Cada skill vive en su propia carpeta con `SKILL.md`, `references/`, `scripts/` y `assets/`
-   según necesite.
-2. Los cálculos van en scripts con pruebas (`pytest`); los scripts imprimen PASS/FAIL y
-   salen con código distinto de cero si algo falla.
-3. Sin datos de clientes reales, rutas locales ni credenciales en el repositorio.
-4. Agrega tu skill al [catálogo](#catálogo) de este README.
+CFAMex_Skills es un proyecto abierto de la comunidad de CFA Society Mexico. Si eres
+charterholder, candidato o profesional de inversiones y tienes un proceso que haces una y
+otra vez, probablemente ya es una skill esperando ser escrita. Compártela: tu trabajo puede
+ahorrarle horas a cientos de colegas y elevar el estándar de cómo la industria usa la IA.
 
-¿Encontraste un error o tienes una idea? Abre un
-[issue](https://github.com/CFA-Society-Mexico/Skill/issues).
+**Ideas que nos encantaría ver**
+
+| Área | Ejemplos de skills |
+|---|---|
+| Renta variable | Valuación DCF con reverse DCF, múltiplos comparables, revisión de resultados trimestrales |
+| Renta fija | Análisis de curva, duración y convexidad de cartera, valor relativo entre emisiones |
+| Portafolios | Rebalanceo por corredores, atribución de desempeño, presentación conforme a GIPS® |
+| Riesgo | VaR y pruebas de estrés, análisis de concentración, monitoreo de límites |
+| Ética y cumplimiento | Revisión de idoneidad, checklist del Código y Estándares, conflictos de interés |
+| Mercado mexicano | Lectura de reportes BMV, análisis de FIBRAs, curvas de Cetes y Mbonos |
+
+¿Tienes otra idea? Propónla en un
+[issue](https://github.com/CFA-Society-Mexico/CFAMex_Skills/issues) antes de escribirla y
+la afinamos juntos.
+
+### Cómo colaborar
+
+1. Haz un fork del repositorio y crea una rama para tu skill.
+2. Pon tu skill en su propia carpeta, con `SKILL.md` más `references/`, `scripts/` y
+   `assets/` según necesite.
+3. Pon los cálculos en scripts con pruebas (`pytest`). Los scripts imprimen PASS/FAIL y salen
+   con código distinto de cero si algo falla.
+4. Aplica los [principios de diseño](#principios-de-diseño): el modelo propone, el
+   profesional decide, y ninguna cifra queda sin fuente.
+5. No subas datos de clientes reales, rutas locales ni credenciales.
+6. Agrega tu skill al [catálogo](#catálogo) y abre un pull request.
+
+¿Encontraste un error? Abre un
+[issue](https://github.com/CFA-Society-Mexico/CFAMex_Skills/issues).
 
 ---
 
@@ -173,4 +203,4 @@ Distribuido bajo la [licencia MIT](LICENSE) · © 2026 CFA Society Mexico.
 > cumplimiento ni la asesoría fiscal o legal. Verifica cada resultado antes de usarlo con un
 > cliente.
 
-CFA® y Chartered Financial Analyst® son marcas registradas propiedad de CFA Institute.
+CFA®, Chartered Financial Analyst® y GIPS® son marcas registradas propiedad de CFA Institute.
